@@ -1,0 +1,13 @@
+<nav class="black site-header">
+    <div class="nav-wrapper container">
+        <a href="#" class="brand-logo" ng-show="!user">
+            <i class="large material-icons" style="float:left;margin-right:5px;">email</i>
+            {{panel.title}}
+        </a>
+        <a href="#" class="brand-logo" ng-show="user">{{user.name}} <span>{{user.email}}</span></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li ng-show="user"><a href="/#logout" class="red darken-4 waves-effect waves-light btn">Logout</a></li>
+            <li ng-show="!user"><a  href="/#login" class="green waves-effect waves-light btn">Login</a></li>
+        </ul>
+    </div>
+</nav>

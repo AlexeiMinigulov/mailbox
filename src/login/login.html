@@ -1,0 +1,28 @@
+<site-header user="panel.user"/>
+<site-container>
+    <div class="row login-form">
+        <form class="col s12">
+            <h4>Sign In</h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="login" type="text" class="validate" ng-model="panel.loginField">
+                    <label for="login">Login</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="password" type="password" ng-model="panel.passwordField">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="login-btn-wrapper">
+                    <a class="waves-effect waves-light btn green" ng-click="panel.login()">Login</a>
+                    <site-loader ng-show="panel.loading" class="login-loader" />
+                    <site-message data-type="error" ng-show="panel.error">{{panel.errorText}}</site-message>
+                </div>
+            </div>
+        </form>
+    </div>
+</site-container>
+<site-footer />

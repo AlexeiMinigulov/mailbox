@@ -1,0 +1,12 @@
+.row.login-form{
+    max-width:400px;
+    margin-left:auto;
+    margin-right: auto;
+}
+.login-btn-wrapper{
+    text-align: center;
+}
+.login-loader{
+    position:absolute;
+    margin-left: 20px;
+}

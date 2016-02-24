@@ -1,0 +1,17 @@
+.message-from{
+    display:inline-block;
+    width:25%;
+    padding-right:10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.message-subject{
+    display:inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width:50%;
+}
+.messages-list-panel{
+    margin-left: 210px;
+}

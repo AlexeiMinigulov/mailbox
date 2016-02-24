@@ -1,0 +1,3 @@
+<div class="collection left site-left-nav">
+    <a href="/#{{item.state}}" class="collection-item" ng-repeat="item in panel.menu" ng-class="{'active blue': activeData.item == item.state}">{{item.name}} <span ng-if="activeData.item == item.state && activeData.count">({{activeData.count}})</span></a>
+</div>

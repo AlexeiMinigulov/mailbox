@@ -1,0 +1,10 @@
+<h4>Messages</h4>
+<site-horizontal-loader ng-show="panel.loading" />
+<site-left-nav data-active-data="panel.leftMenuData"></site-left-nav>
+<div class="collection messages-list-panel" ng-show="!panel.loading">
+    <a href="/#messages/item/{{message.id}}" class="collection-item" ng-repeat="message in messages | orderBy : 'date' : true">
+        <span class="message-from black-text">{{message.email}}</span>
+        <span class="message-subject black-text">{{message.name}}</span>
+        <span class="message-date right blue-text">{{message.date | date}}</span>
+    </a>
+</div>

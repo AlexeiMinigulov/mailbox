@@ -1,0 +1,7 @@
+.site-header .brand-logo{
+    font-size: 1.4rem;
+}
+.site-header .brand-logo span{
+    color: lightgray;
+    font-weight: 300;
+}
