@@ -12,8 +12,8 @@ module.exports = function login($timeout, $state, Auth){
         link: function(scope){
 
             var panel = scope.panel = {
-                loginField: '',
-                passwordField: '',
+                loginField: 'admin',
+                passwordField: 'admin',
                 loading: false,
                 user: null
             };

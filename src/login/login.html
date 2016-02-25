@@ -6,13 +6,13 @@
             <div class="row">
                 <div class="input-field col s12">
                     <input id="login" type="text" class="validate" ng-model="panel.loginField">
-                    <label for="login">Login</label>
+                    <label ng-class="{'active':!!panel.loginField}" for="login">Login</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
                     <input id="password" type="password" ng-model="panel.passwordField">
-                    <label for="password">Password</label>
+                    <label ng-class="{'active':!!panel.passwordField}" for="password">Password</label>
                 </div>
             </div>
             <div class="row">

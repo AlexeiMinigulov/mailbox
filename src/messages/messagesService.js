@@ -9,7 +9,7 @@ module.exports = function messagesService($q, $http){
 
         getAll: function(){
             var d = $q.defer();
-            if(lastRequestTime && lastRequestTime > Date.now() - 60000 && false){
+            if(lastRequestTime && lastRequestTime > Date.now() - 60000){
                 d.resolve(messages);
             }else{
                 $http.get('/data/messages.json').then(

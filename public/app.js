@@ -70,6 +70,7 @@
 	__webpack_require__(40)(app);
 	__webpack_require__(45)(app);
 	__webpack_require__(50)(app);
+	__webpack_require__(60)(app);
 
 	app.run(function ($rootScope, Auth, $state) {
 	    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
@@ -132,17 +133,14 @@
 
 	module.exports = function Auth($q, $http, Configuration) {
 
-	    var _user = Configuration.getStorageData('user');
-
 	    return {
 
 	        login: function login(_login, password) {
 	            var d = $q.defer();
 	            if (_login == 'admin' && password == 'admin') {
-	                $http.get('http://jsonplaceholder.typicode.com/users/1').then(function (data) {
-	                    _user = data.data;
-	                    Configuration.setStorageData('user', _user);
-	                    d.resolve(_user);
+	                $http.get('/data/users.json').then(function (data) {
+	                    Configuration.setStorageData('user', data.data[1]);
+	                    d.resolve(data.data[1]);
 	                }, function (error) {
 	                    d.reject(error);
 	                });
@@ -154,11 +152,10 @@
 
 	        logout: function logout() {
 	            Configuration.removeStorageData('user');
-	            _user = null;
 	        },
 
 	        user: function user() {
-	            return _user;
+	            return Configuration.getStorageData('user');
 	        }
 
 	    };
@@ -937,6 +934,9 @@
 	                menu: [{
 	                    name: 'Messages',
 	                    state: 'messages'
+	                }, {
+	                    name: 'Contacts',
+	                    state: 'contacts'
 	                }]
 	            };
 	        },
@@ -1082,8 +1082,8 @@
 	        link: function link(scope) {
 
 	            var panel = scope.panel = {
-	                loginField: '',
-	                passwordField: '',
+	                loginField: 'admin',
+	                passwordField: 'admin',
 	                loading: false,
 	                user: null
 	            };
@@ -1152,7 +1152,7 @@
 /* 44 */
 /***/ function(module, exports) {
 
-	module.exports = "<site-header user=\"panel.user\"/>\r\n<site-container>\r\n    <div class=\"row login-form\">\r\n        <form class=\"col s12\">\r\n            <h4>Sign In</h4>\r\n            <div class=\"row\">\r\n                <div class=\"input-field col s12\">\r\n                    <input id=\"login\" type=\"text\" class=\"validate\" ng-model=\"panel.loginField\">\r\n                    <label for=\"login\">Login</label>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"input-field col s12\">\r\n                    <input id=\"password\" type=\"password\" ng-model=\"panel.passwordField\">\r\n                    <label for=\"password\">Password</label>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"login-btn-wrapper\">\r\n                    <a class=\"waves-effect waves-light btn green\" ng-click=\"panel.login()\">Login</a>\r\n                    <site-loader ng-show=\"panel.loading\" class=\"login-loader\" />\r\n                    <site-message data-type=\"error\" ng-show=\"panel.error\">{{panel.errorText}}</site-message>\r\n                </div>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</site-container>\r\n<site-footer />";
+	module.exports = "<site-header user=\"panel.user\"/>\r\n<site-container>\r\n    <div class=\"row login-form\">\r\n        <form class=\"col s12\">\r\n            <h4>Sign In</h4>\r\n            <div class=\"row\">\r\n                <div class=\"input-field col s12\">\r\n                    <input id=\"login\" type=\"text\" class=\"validate\" ng-model=\"panel.loginField\">\r\n                    <label ng-class=\"{'active':!!panel.loginField}\" for=\"login\">Login</label>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"input-field col s12\">\r\n                    <input id=\"password\" type=\"password\" ng-model=\"panel.passwordField\">\r\n                    <label ng-class=\"{'active':!!panel.passwordField}\" for=\"password\">Password</label>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"login-btn-wrapper\">\r\n                    <a class=\"waves-effect waves-light btn green\" ng-click=\"panel.login()\">Login</a>\r\n                    <site-loader ng-show=\"panel.loading\" class=\"login-loader\" />\r\n                    <site-message data-type=\"error\" ng-show=\"panel.error\">{{panel.errorText}}</site-message>\r\n                </div>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</site-container>\r\n<site-footer />";
 
 /***/ },
 /* 45 */
@@ -1364,7 +1364,7 @@
 	                scope.panel.loading = false;
 	            }, function (error) {
 	                scope.panel.loading = false;
-	                scope.panel.errorText = e;
+	                scope.panel.errorText = error;
 	            });
 	        },
 	        template: __webpack_require__(56)
@@ -1375,7 +1375,7 @@
 /* 56 */
 /***/ function(module, exports) {
 
-	module.exports = "<h4>Messages</h4>\r\n<site-horizontal-loader ng-show=\"panel.loading\" />\r\n<site-left-nav data-active-data=\"panel.leftMenuData\"></site-left-nav>\r\n<div class=\"collection messages-list-panel\" ng-show=\"!panel.loading\">\r\n    <a href=\"/#messages/item/{{message.id}}\" class=\"collection-item\" ng-repeat=\"message in messages | orderBy : 'date' : true\">\r\n        <span class=\"message-from black-text\">{{message.email}}</span>\r\n        <span class=\"message-subject black-text\">{{message.name}}</span>\r\n        <span class=\"message-date right blue-text\">{{message.date | date}}</span>\r\n    </a>\r\n</div>";
+	module.exports = "<h4>Messages</h4>\r\n<site-horizontal-loader ng-show=\"panel.loading\" />\r\n<site-left-nav data-active-data=\"panel.leftMenuData\"></site-left-nav>\r\n<div class=\"collection messages-list-panel\" ng-show=\"!panel.loading\">\r\n    <a href=\"/#messages/item/{{message.id}}\" class=\"collection-item\" ng-repeat=\"message in messages | orderBy : 'date' : true\">\r\n        <span class=\"message-from black-text\">{{message.email}}</span>\r\n        <span class=\"message-subject black-text\">{{message.name}}</span>\r\n        <span class=\"message-date right blue-text\">{{message.date}}</span>\r\n    </a>\r\n</div>";
 
 /***/ },
 /* 57 */
@@ -1411,7 +1411,7 @@
 /* 58 */
 /***/ function(module, exports) {
 
-	module.exports = "<site-horizontal-loader ng-show=\"panel.loading\" />\r\n<div ng-show=\"!panel.loading\">\r\n    <a href=\"/#messages\" class=\"btn-floating btn-large waves-effect waves-light blue lighten-2 right\"><i class=\"material-icons\">replay</i></a>\r\n    <h4>{{message.name}}</h4>\r\n    <p>\r\n        <b>{{message.email}}</b> {{message.date | date}}\r\n    </p>\r\n    <p>\r\n        {{message.body}}\r\n    </p>\r\n</div>";
+	module.exports = "<site-horizontal-loader ng-show=\"panel.loading\" />\r\n<div ng-show=\"!panel.loading\">\r\n    <a href=\"/#messages\" class=\"btn-floating btn-large waves-effect waves-light blue right\"><i class=\"material-icons\">replay</i></a>\r\n    <h4>{{message.name}}</h4>\r\n    <p>\r\n        <b>{{message.email}}</b> {{message.date | date}}\r\n    </p>\r\n    <p>\r\n        {{message.body}}\r\n    </p>\r\n</div>";
 
 /***/ },
 /* 59 */
@@ -1431,12 +1431,9 @@
 	            if (lastRequestTime && lastRequestTime > Date.now() - 60000) {
 	                d.resolve(messages);
 	            } else {
-	                $http.get('http://jsonplaceholder.typicode.com/comments').then(function (data) {
+	                $http.get('/data/messages.json').then(function (data) {
+	                    messages = data.data;
 	                    lastRequestTime = Date.now();
-	                    messages = data.data.map(function (v, k) {
-	                        v.date = new Date() - 24 * 3600 * 1000 * Math.random() * k;
-	                        return v;
-	                    });
 	                    d.resolve(messages);
 	                }, function (error) {
 	                    d.reject(error);
@@ -1455,6 +1452,290 @@
 	                    }
 	                });
 	                d.resolve(message);
+	            }, function (err) {
+	                d.reject(err);
+	            });
+	            return d.promise;
+	        }
+
+	    };
+	};
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(61);
+
+	module.exports = function (app) {
+
+	    app.config(function ($stateProvider) {
+
+	        $stateProvider.state('contacts', {
+	            template: '<users />',
+	            data: {
+	                login: true
+	            }
+	        }).state('contacts.list', {
+	            url: '/contacts',
+	            template: '<users-list />'
+	        }).state('contacts.edit', {
+	            url: "/contacts/edit/:userId",
+	            templateProvider: function templateProvider($timeout, $stateParams) {
+	                return $timeout(function () {
+	                    return '<user-edit id="' + $stateParams.userId + '"></user-edit>';
+	                }, 100);
+	            }
+	        });
+	    });
+
+	    app.directive('users', __webpack_require__(63));
+	    app.directive('usersList', __webpack_require__(65));
+	    app.directive('userEdit', __webpack_require__(67));
+	    app.service('Users', __webpack_require__(69));
+	};
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(62);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(7)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./styles.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./styles.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(6)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".edit-user-form{\r\n    max-width:600px;\r\n    margin:25px auto!important;\r\n}\r\n.contact-list-panel{\r\n    margin-left: 210px;\r\n    clear: right;\r\n}", ""]);
+
+	// exports
+
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function messages(Auth) {
+	    return {
+	        restrict: 'E',
+	        scope: {},
+	        link: function link(scope) {
+	            scope.user = Auth.user();
+	        },
+	        template: __webpack_require__(64)
+	    };
+	};
+
+/***/ },
+/* 64 */
+/***/ function(module, exports) {
+
+	module.exports = "<site-header user=\"user\"/>\r\n<site-container>\r\n    <ui-view />\r\n</site-container>\r\n<site-footer />";
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function messagesList(Users) {
+
+	    return {
+	        restrict: 'E',
+	        link: function link(scope) {
+	            scope.users = [];
+	            scope.panel = {
+	                loading: true,
+	                errorText: '',
+	                leftMenuData: {
+	                    item: 'contacts'
+	                }
+	            };
+	            Users.getAll().then(function (users) {
+	                scope.users = users;
+	                scope.panel.leftMenuData.count = users.length;
+	                scope.panel.loading = false;
+	            }, function (error) {
+	                scope.panel.loading = false;
+	                scope.panel.errorText = e;
+	            });
+	        },
+	        template: __webpack_require__(66)
+	    };
+	};
+
+/***/ },
+/* 66 */
+/***/ function(module, exports) {
+
+	module.exports = "<a href=\"/#contacts/edit/0\" class=\"btn-floating btn-large waves-effect waves-light blue right\"><i class=\"material-icons\">add</i></a>\r\n<h4>Contacts</h4>\r\n<site-horizontal-loader ng-show=\"panel.loading\" />\r\n\r\n<site-left-nav data-active-data=\"panel.leftMenuData\"></site-left-nav>\r\n<ul class=\"collection contact-list-panel\" ng-show=\"!panel.loading\">\r\n    <li class=\"collection-item\" ng-repeat=\"user in users\">\r\n        <span class=\"message-from black-text\">{{user.name}}</span>\r\n        <span class=\"message-subject black-text\">{{user.username}}</span>\r\n        <span class=\"message-date right blue-text\"><a href=\"/#contacts/edit/{{user.id}}\"><i class=\"material-icons small\">edit</i></a></span>\r\n    </li>\r\n</ul>";
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = function userEdit(Users, $timeout) {
+
+	    var errorHideTime = 2000;
+
+	    return {
+	        restrict: 'E',
+	        scope: {
+	            id: '='
+	        },
+	        link: function link(scope) {
+	            scope.panel = {
+	                title: 'Edit contact',
+	                loading: true,
+	                contact: null,
+	                error: false,
+	                success: false,
+	                text: '',
+	                editUser: function editUser() {
+
+	                    if (!this.contact.name) {
+	                        scope.panel.error = true;
+	                        scope.panel.text = 'Please fill field Name';
+	                        $timeout(function () {
+	                            scope.panel.error = false;
+	                        }, errorHideTime);
+	                    } else if (!this.contact.username) {
+	                        scope.panel.error = true;
+	                        scope.panel.text = 'Please fill field Username';
+	                        $timeout(function () {
+	                            scope.panel.error = false;
+	                        }, errorHideTime);
+	                    } else {
+	                        Users.saveById(scope.panel.contact);
+	                        scope.panel.success = true;
+	                        scope.panel.text = 'Used saved';
+	                        $timeout(function () {
+	                            scope.panel.success = false;
+	                        }, errorHideTime);
+	                    }
+	                }
+	            };
+	            if (scope.id) {
+	                Users.getById(scope.id).then(function (user) {
+	                    scope.panel.contact = angular.copy(user);
+	                    scope.panel.loading = false;
+	                }, function (e) {
+	                    scope.panel.loading = false;
+	                    scope.panel.errorText = e;
+	                });
+	            } else {
+	                scope.panel.title = 'Add contact';
+	                scope.panel.loading = false;
+	                scope.panel.contact = {
+	                    name: '',
+	                    username: ''
+	                };
+	            }
+	        },
+	        template: __webpack_require__(68)
+	    };
+	};
+
+/***/ },
+/* 68 */
+/***/ function(module, exports) {
+
+	module.exports = "<site-horizontal-loader ng-show=\"panel.loading\" />\r\n<h4>{{panel.title}}</h4>\r\n<div ng-show=\"!panel.loading\">\r\n\r\n    <div class=\"row edit-user-form\">\r\n        <form class=\"col s12\">\r\n            <div class=\"row\">\r\n                <div class=\"input-field col s12\">\r\n                    <input id=\"name\" ng-model=\"panel.contact.name\" type=\"text\" class=\"validate\">\r\n                    <label ng-class=\"{'active':!!panel.contact.name}\" for=\"name\">Name</label>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"input-field col s12\">\r\n                    <input id=\"username\" ng-model=\"panel.contact.username\" type=\"text\" class=\"validate\">\r\n                    <label ng-class=\"{'active':!!panel.contact.username}\" for=\"username\">Username</label>\r\n                </div>\r\n            </div>\r\n            <div class=\"row\">\r\n                <div class=\"input-field col s12\">\r\n                    <button class=\"waves-effect waves-light btn blue\" ng-click=\"panel.editUser()\">Save</button>\r\n                    <a href=\"/#contacts\" class=\"waves-effect waves-light btn grey right\">Back</a>\r\n                    <site-message data-type=\"error\" ng-show=\"panel.error\">{{panel.text}}</site-message>\r\n                    <site-message data-type=\"success\" ng-show=\"panel.success\">{{panel.text}}</site-message>\r\n                </div>\r\n            </div>\r\n        </form>\r\n    </div>\r\n</div>";
+
+/***/ },
+/* 69 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function usersService($q, $http, Configuration) {
+
+	    var users = Configuration.getStorageData('users');
+
+	    return {
+
+	        getAll: function getAll() {
+	            var d = $q.defer();
+	            if (users && users[0]) {
+	                d.resolve(users);
+	            } else {
+	                $http.get('/data/users.json').then(function (data) {
+	                    users = data.data;
+	                    Configuration.setStorageData('users', users);
+	                    d.resolve(users);
+	                }, function (error) {
+	                    d.reject(error);
+	                });
+	            }
+	            return d.promise;
+	        },
+
+	        getById: function getById(id) {
+	            var d = $q.defer();
+	            this.getAll().then(function (users) {
+	                var user = null;
+	                users.forEach(function (m) {
+	                    if (m.id == id) {
+	                        user = m;
+	                    }
+	                });
+	                d.resolve(user);
+	            }, function (err) {
+	                d.reject(err);
+	            });
+	            return d.promise;
+	        },
+
+	        saveById: function saveById(userFields) {
+	            var d = $q.defer();
+	            this.getAll().then(function (users) {
+	                if (userFields.id) {
+	                    users.forEach(function (m) {
+	                        if (m.id == userFields.id) {
+	                            m.name = userFields.name;
+	                            m.username = userFields.username;
+	                        }
+	                    });
+	                } else {
+	                    users.push({
+	                        id: users.length,
+	                        name: userFields.name,
+	                        username: userFields.username
+	                    });
+	                }
+
+	                Configuration.setStorageData('users', users);
+	                d.resolve();
 	            }, function (err) {
 	                d.reject(err);
 	            });

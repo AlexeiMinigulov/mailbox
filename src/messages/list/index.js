@@ -21,7 +21,7 @@ module.exports = function messagesList(Messages){
                 },
                 function(error){
                     scope.panel.loading = false;
-                    scope.panel.errorText = e;
+                    scope.panel.errorText = error;
                 }
             );
         },
