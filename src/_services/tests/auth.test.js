@@ -42,7 +42,7 @@ describe('Auth Service', function(){
     });
 
     it('login()', function(done){
-        $httpBackend.expectGET('http://jsonplaceholder.typicode.com/users/1').respond(defaultUser);
+        $httpBackend.expectGET('/data/users.json').respond(defaultUser);
         Auth.login('admin', 'admin').then(
             function(data){
                 Auth.logout();
@@ -59,7 +59,7 @@ describe('Auth Service', function(){
     });
 
     it('login() fail', function(done){
-        $httpBackend.expectGET('http://jsonplaceholder.typicode.com/users/1').respond(401, "some http error");
+        $httpBackend.expectGET('/data/users.json').respond(401, "some http error");
         Auth.login('admin', 'admin').then(
             function(data){},
             function(error){

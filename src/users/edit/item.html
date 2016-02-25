@@ -1,0 +1,29 @@
+<site-horizontal-loader ng-show="panel.loading" />
+<h4>{{panel.title}}</h4>
+<div ng-show="!panel.loading">
+
+    <div class="row edit-user-form">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="name" ng-model="panel.contact.name" type="text" class="validate">
+                    <label ng-class="{'active':!!panel.contact.name}" for="name">Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="username" ng-model="panel.contact.username" type="text" class="validate">
+                    <label ng-class="{'active':!!panel.contact.username}" for="username">Username</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <button class="waves-effect waves-light btn blue" ng-click="panel.editUser()">Save</button>
+                    <a href="/#contacts" class="waves-effect waves-light btn grey right">Back</a>
+                    <site-message data-type="error" ng-show="panel.error">{{panel.text}}</site-message>
+                    <site-message data-type="success" ng-show="panel.success">{{panel.text}}</site-message>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

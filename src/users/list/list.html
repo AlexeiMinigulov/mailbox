@@ -1,0 +1,12 @@
+<a href="/#contacts/edit/0" class="btn-floating btn-large waves-effect waves-light blue right"><i class="material-icons">add</i></a>
+<h4>Contacts</h4>
+<site-horizontal-loader ng-show="panel.loading" />
+
+<site-left-nav data-active-data="panel.leftMenuData"></site-left-nav>
+<ul class="collection contact-list-panel" ng-show="!panel.loading">
+    <li class="collection-item" ng-repeat="user in users">
+        <span class="message-from black-text">{{user.name}}</span>
+        <span class="message-subject black-text">{{user.username}}</span>
+        <span class="message-date right blue-text"><a href="/#contacts/edit/{{user.id}}"><i class="material-icons small">edit</i></a></span>
+    </li>
+</ul>

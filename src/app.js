@@ -24,6 +24,7 @@ require('./home')(app);
 require('./login')(app);
 require('./denied')(app);
 require('./messages')(app);
+require('./users')(app);
 
 app.run(function($rootScope, Auth, $state){
     $rootScope.$on('$stateChangeStart',

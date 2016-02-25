@@ -9,16 +9,13 @@ module.exports = function messagesService($q, $http){
 
         getAll: function(){
             var d = $q.defer();
-            if(lastRequestTime && lastRequestTime > Date.now() - 60000){
+            if(lastRequestTime && lastRequestTime > Date.now() - 60000 && false){
                 d.resolve(messages);
             }else{
-                $http.get('http://jsonplaceholder.typicode.com/comments').then(
+                $http.get('/data/messages.json').then(
                     function(data){
+                        messages = data.data;
                         lastRequestTime = Date.now();
-                        messages = data.data.map(function(v, k){
-                            v.date = new Date() - 24*3600*1000*Math.random()*k;
-                            return v;
-                        });
                         d.resolve(messages);
                     },
                     function(error){

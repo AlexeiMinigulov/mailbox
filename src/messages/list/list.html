@@ -5,6 +5,6 @@
     <a href="/#messages/item/{{message.id}}" class="collection-item" ng-repeat="message in messages | orderBy : 'date' : true">
         <span class="message-from black-text">{{message.email}}</span>
         <span class="message-subject black-text">{{message.name}}</span>
-        <span class="message-date right blue-text">{{message.date | date}}</span>
+        <span class="message-date right blue-text">{{message.date}}</span>
     </a>
 </div>

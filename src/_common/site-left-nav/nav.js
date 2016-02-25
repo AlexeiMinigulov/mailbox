@@ -13,6 +13,10 @@ module.exports = function loaderDirective(){
                     {
                         name: 'Messages',
                         state: 'messages'
+                    },
+                    {
+                        name: 'Contacts',
+                        state: 'contacts'
                     }
                 ]
             };

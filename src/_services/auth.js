@@ -2,18 +2,15 @@
 
 module.exports = function Auth($q, $http, Configuration) {
 
-    var user = Configuration.getStorageData('user');
-
     return {
 
         login: function (login, password) {
             var d = $q.defer();
             if (login == 'admin' && password == 'admin') {
-                $http.get('http://jsonplaceholder.typicode.com/users/1').then(
+                $http.get('/data/users.json').then(
                     function (data) {
-                        user = data.data;
-                        Configuration.setStorageData('user', user);
-                        d.resolve(user);
+                        Configuration.setStorageData('user', data.data[1]);
+                        d.resolve(data.data[1]);
                     }, function (error) {
                         d.reject(error)
                     }
@@ -26,11 +23,10 @@ module.exports = function Auth($q, $http, Configuration) {
 
         logout: function () {
             Configuration.removeStorageData('user');
-            user = null;
         },
 
         user: function () {
-            return user;
+            return Configuration.getStorageData('user');
         }
 
     };
