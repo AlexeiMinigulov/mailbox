@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "Test AngularJS project",
   "main": "public/app.js",
-  "scripts": {},
+  "scripts": {
+    "test": "karma start",
+    "start": "static public"
+  },
   "author": "Anatoly Vasilev",
   "license": "ISC",
   "dependencies": {
@@ -15,7 +18,9 @@
     "karma": "^0.13.21",
     "karma-chrome-launcher": "^0.2.2",
     "karma-coverage": "^0.5.3",
+    "karma-jasmine": "^0.3.7",
     "karma-webpack": "^1.7.0",
+    "node-static": "^0.7.7",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.13"
   }
